@@ -6,20 +6,21 @@ $mensaje = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $usuario = $_POST['usuario'];
-    $clave = $_POST['clave'];
-    $nombre = $_POST['nombre'];
+    $clave = password_hash($_POST['clave'], PASSWORD_DEFAULT); 
+    $correo = $_POST['correo'];
     $curso = $_POST['curso'];
 
-    if (!empty($usuario) && !empty($clave) && !empty($nombre)) {
-        $query = $cnnPDO->prepare("INSERT INTO usuarios (usuario, clave, nombre, curso) VALUES (:usuario, :clave, :nombre, :curso)");
+    if (!empty($usuario) && !empty($_POST['clave']) && !empty($correo)) {
+        $query = $cnnPDO->prepare("INSERT INTO usuarios (usuario, clave, correo, curso) VALUES (:usuario, :clave, :correo, :curso)");
         $query->bindParam(':usuario', $usuario);
-        $query->bindParam(':clave', $clave);
-        $query->bindParam(':nombre', $nombre);
+        $query->bindParam(':clave', $clave); 
+        $query->bindParam(':correo', $correo);
         $query->bindParam(':curso', $curso);
 
         if ($query->execute()) {
             $mensaje = "¡Usuario registrado exitosamente!";
             header("Location: form.php");
+            exit(); 
         } else {
             $mensaje = "Error al registrar usuario.";
         }
@@ -28,6 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -198,7 +200,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   </div>
                   <div class="col-lg-12">
                      <div class="form-group">
-                        <input class="form-control form-name" name="nombre" placeholder="Nombre completo *" type="text" required>
+                        <input class="form-control form-name" name="correo" placeholder="Correo electrónico *" type="email" required>
                      </div>
                   </div>
                   <div class="col-lg-12">

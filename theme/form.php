@@ -3,47 +3,43 @@ ob_start();
 ?>
 <?php
 require_once 'db_conexion.php';
-
 session_start();
 
 $alertMessage = '';
 
 if (isset($_POST['login'])) {
-    $usuario = $_POST['usuario'];
+    $usuario = $_POST['usuario'] ?? '';
+    $clave = $_POST['clave'] ?? '';
 
-    if (isset($_POST['clave'])) {
-        $clave = $_POST['clave'];
-
-        $query = $cnnPDO->prepare('SELECT * FROM usuarios WHERE usuario = :usuario AND clave = :clave');
-        $query->bindParam(':usuario', $usuario);
-        $query->bindParam(':clave', $clave);
+    if (!empty($usuario) && !empty($clave)) {
+        $query = $cnnPDO->prepare('SELECT * FROM usuarios WHERE usuario = :user OR correo = :user LIMIT 1');
+        $query->bindParam(':user', $usuario);
         $query->execute();
 
-        $count = $query->rowCount();
-        $campo = $query->fetch();
+        $userData = $query->fetch(PDO::FETCH_ASSOC);
 
-        if ($count) {
-            $_SESSION['usuario'] = $campo['usuario'];
-            $_SESSION['nombre'] = $campo['nombre'];
-            $_SESSION['clave'] = $campo['clave'];
-            $_SESSION['curso'] = $campo['curso'];
+        if ($userData && password_verify($clave, $userData['clave'])) {
+            // Guardar datos del usuario en la sesión
+            $_SESSION['usuario'] = $userData['usuario'];
+            $_SESSION['correo'] = $userData['correo'];
+            $_SESSION['nombre'] = $userData['nombre'];
+            $_SESSION['curso'] = $userData['curso'];
 
-            if ($campo['usuario'] == 'admin') {
+            // Redirigir según el tipo de usuario
+            if ($userData['usuario'] === 'admin') {
                 header("location: indexadmin.php");
             } else {
-                
                 header("location: indexusuario.php");
             }
-            
             exit();
         } else {
             $alertMessage .= '<script>mostrarToast("Credenciales incorrectas", "error");</script>';
         }
     } else {
-       
-        $alertMessage .= '<script>mostrarToast("Contraseña no proporcionada", "error");</script>';
+        $alertMessage .= '<script>mostrarToast("Usuario o contraseña vacíos", "error");</script>';
     }
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -197,7 +193,7 @@ if (isset($_POST['login'])) {
                         <div class="row">
                            <div class="col-lg-12">
                               <div class="form-group">
-                                 <input class="form-control form-name" id="email" name="usuario" placeholder="Usuario" type="text" required>
+                                 <input class="form-control form-name" id="email" name="usuario" placeholder="Usuario o correo" type="text" required>
                               </div>
                            </div>
                            <!-- Col end-->

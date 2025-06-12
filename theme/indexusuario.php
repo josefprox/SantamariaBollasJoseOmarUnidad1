@@ -9,7 +9,7 @@ if (!isset($_SESSION['usuario'])) {
 
 if (isset($_POST['cerrar_sesion'])) {
     session_destroy();
-    header('location: form.php');
+    header("Location: index.html");
     exit();
 }
 ?>
@@ -103,8 +103,8 @@ if (isset($_POST['cerrar_sesion'])) {
                         <ul class="top-info unstyled">
                            <li><span class="info-icon"><i class="icon icon-phone3"></i></span>
                               <div class="info-wrapper">
-                                 <p class="info-title">Nombre:</p>
-                                 <p class="info-subtitle"><?php echo $_SESSION['nombre'];?></p>
+                                 <p class="info-title">Correo:</p>
+                                 <p class="info-subtitle"><?php echo $_SESSION['correo'];?></p>
                               </div>
                            </li>
                            <li><span class="info-icon"><i class="icon icon-envelope"></i></span>
@@ -215,9 +215,9 @@ if (isset($_POST['cerrar_sesion'])) {
       </div>
 
       <?php
-if (isset($_SESSION['nombre'])) {
-    $query = $cnnPDO->prepare('SELECT * FROM cursos WHERE nombre = :nombre');
-    $query->bindParam(':nombre', $_SESSION['nombre']);
+if (isset($_SESSION['usuario'])) {
+    $query = $cnnPDO->prepare('SELECT * FROM cursos WHERE usuario = :usuario');
+    $query->bindParam(':usuario', $_SESSION['usuario']);
     $query->execute();
 
     echo '<div class="row justify-content-center mt-4 mb-4">';
@@ -230,7 +230,7 @@ if (isset($_SESSION['nombre'])) {
         echo '<div class="card ts-feature-box mt-3 mb-3">'; 
         echo '<div class="card-body text-center">';
         echo '<h5 class="card-title ts-feature-title" style="font-size: 24px; margin-bottom: 10px;">' . $campo['curso'] . '</h5>';
-        echo '<h6 class="card-subtitle mb-3 text-body-secondary" style="margin-bottom: 10px;">' . $_SESSION['nombre'] . '</h6>';
+        echo '<h6 class="card-subtitle mb-3 text-body-secondary" style="margin-bottom: 10px;">' . $_SESSION['usuario'] . '</h6>';
         echo '<a href="#" class="btn btn-primary" style="margin-top: 10px;">Leer más</a>';
         echo '</div>';
         echo '</div>';

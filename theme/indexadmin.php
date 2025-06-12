@@ -13,15 +13,13 @@ if (isset($_POST['cerrar_sesion'])) {
    exit();
 }
 
-if (isset($_POST['nombre']) && isset($_POST['curso'])) {
-   $nombre = trim($_POST['nombre']);
+if (isset($_POST['correo']) && isset($_POST['curso'])) {
+   $correo = trim($_POST['correo']);
    $curso = trim($_POST['curso']);
 
-   if (!empty($nombre) && !empty($curso)) {
-      $query = $cnnPDO->prepare('INSERT INTO cursos (nombre, curso) VALUES (?, ?)');
-      $query->execute([$nombre, $curso]);
-
-      // Redirección con recarga
+   if (!empty($correo) && !empty($curso)) {
+      $query = $cnnPDO->prepare('INSERT INTO cursos (correo, curso) VALUES (?, ?)');
+      $query->execute([$correo, $curso]);
       header("Location: " . $_SERVER['PHP_SELF']);
       exit();
    }
@@ -116,8 +114,8 @@ if (isset($_POST['curso']) && isset($_POST['duracion'])) {
                         <ul class="top-info unstyled">
                            <li><span class="info-icon"><i class="icon icon-phone3"></i></span>
                               <div class="info-wrapper">
-                                 <p class="info-title">Nombre:</p>
-                                 <p class="info-subtitle"><?php echo $_SESSION['nombre'];?></p>
+                                 <p class="info-title">Correo:</p>
+                                 <p class="info-subtitle"><?php echo $_SESSION['correo'];?></p>
                               </div>
                            </li>
                            <li><span class="info-icon"><i class="icon icon-envelope"></i></span>
@@ -164,8 +162,8 @@ if (isset($_POST['curso']) && isset($_POST['duracion'])) {
       </div>
       
       <?php
-if (isset($_SESSION['nombre'])) {
-    $query = $cnnPDO->prepare('SELECT nombre, GROUP_CONCAT(curso) AS cursos FROM cursos GROUP BY nombre');
+if (isset($_SESSION['usuario'])) {
+    $query = $cnnPDO->prepare('SELECT usuario, GROUP_CONCAT(curso) AS cursos FROM cursos GROUP BY usuario');
     $query->execute();
 
     echo '<div class="container">';
@@ -179,11 +177,11 @@ if (isset($_SESSION['nombre'])) {
     echo '<div class="col-lg-4" style="margin-left: 70%;">'; 
     echo '<fieldset>';
     echo '<select class="fa fa-angle-down form-control" style="margin-top: 10px;" aria-label="Default select example" name="nombre">';
-    echo '<option selected>Selecciona un nombre</option>';
+    echo '<option selected>Selecciona un usuario</option>';
     $queryUsuarios = $cnnPDO->prepare('SELECT * FROM usuarios');
     $queryUsuarios->execute();
     while ($campo = $queryUsuarios->fetch()) {
-        echo '<option>' . $campo['nombre'] . '</option>';
+        echo '<option>' . $campo['usuario'] . '</option>';
     }
     echo '</select>';
     echo '</fieldset>';
@@ -220,7 +218,7 @@ if (isset($_SESSION['nombre'])) {
         echo '<div class="col-md-4 mb-3">';
         echo '<div class="card ts-feature-box">';
         echo '<div class="card-body text-center">';
-        echo '<h5 class="card-title ts-feature-title" style="font-size: 24px; margin-bottom: 10px;">' . $campo['nombre'] . '</h5>';
+        echo '<h5 class="card-title ts-feature-title" style="font-size: 24px; margin-bottom: 10px;">' . $campo['Correo'] . '</h5>';
         echo '<p class="custom-course-list">Cursos:</p>';
         echo '<ul class="custom-course-list">';
         $cursos = explode(',', $campo['cursos']);
