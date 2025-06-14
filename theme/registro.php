@@ -195,12 +195,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   </div>
                   <div class="col-lg-12">
                      <div class="form-group">
-                        <input class="form-control form-name" name="clave" placeholder="Clave *" type="password" required>
+                        <input class="form-control form-name" name="correo" placeholder="Correo electrónico *" type="email" required>
                      </div>
                   </div>
                   <div class="col-lg-12">
                      <div class="form-group">
-                        <input class="form-control form-name" name="correo" placeholder="Correo electrónico *" type="email" required>
+                        <input class="form-control form-name" name="clave" placeholder="Contraseña *" type="password" required>
                      </div>
                   </div>
                   <div class="col-lg-12">

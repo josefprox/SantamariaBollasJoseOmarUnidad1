@@ -12,7 +12,32 @@ if (isset($_POST['cerrar_sesion'])) {
     header("Location: index.html");
     exit();
 }
+if (isset($_POST['correo']) && isset($_POST['curso'])) {
+   $correo = trim($_POST['correo']);
+   $curso = trim($_POST['curso']);
+
+   if (!empty($correo) && !empty($curso)) {
+      $query = $cnnPDO->prepare('INSERT INTO cursos (usuario, curso) VALUES (?, ?)');
+      $query->execute([$correo, $curso]);
+      header("Location: " . $_SERVER['PHP_SELF']);
+      exit();
+   }
+}
+if (isset($_POST['curso']) && isset($_POST['duracion'])) {
+   $curso = trim($_POST['curso']);
+   $duracion = trim($_POST['duracion']);
+
+   if (!empty($curso) && !empty($duracion)) {
+      $query = $cnnPDO->prepare('INSERT INTO cursos (curso, duracion) VALUES (?, ?)');
+      $query->execute([$curso, $duracion]);
+
+      // Redirige para evitar reenvío del formulario
+      header("Location: " . $_SERVER['PHP_SELF']);
+      exit();
+        }
+}
 ?>
+
  <script>
         var inactivityTimeout;
 
@@ -32,12 +57,12 @@ if (isset($_POST['cerrar_sesion'])) {
 <html lang="en">
 
 <head>
-    <!--
+     <!--
     Basic Page Needs
     ==================================================
     -->
     <meta charset="utf-8">
-   <title>  Logicraft HTML5 Template</title>
+   <title> Cursos Data</title>
    <!--
     Mobile Specific Metas
     ==================================================
@@ -82,6 +107,59 @@ if (isset($_POST['cerrar_sesion'])) {
             color: #000 !important;
         }
     </style>
+
+    <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lenguajes y Herramientas</title>
+  <style>
+    .ts-service-image-wrapper {
+       width: 100%;
+       height: 200px; /* altura fija para todas las imágenes */
+       display: flex;
+       justify-content: center;
+       align-items: center;
+       overflow: hidden;
+       background-color: #f5f5f5;
+       border-radius: 8px;
+    }
+
+    .ts-service-image-wrapper img {
+       width: 100%;
+       height: 100%;
+       object-fit: cover; /* ajusta la imagen sin deformar */
+       display: block;
+    }
+
+    /* Opcional: algo de estilo para el contenedor y textos */
+    .ts-service-box {
+      box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+      border-radius: 8px;
+      overflow: hidden;
+      background-color: white;
+      margin-bottom: 24px;
+    }
+
+    .ts-service-content {
+      padding: 15px;
+    }
+
+    .service-title {
+      margin-top: 10px;
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+
+    .link-more {
+      text-decoration: none;
+      color: #007bff;
+      font-weight: 500;
+    }
+
+    .link-more:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 
 <body>
@@ -117,6 +195,7 @@ if (isset($_POST['cerrar_sesion'])) {
                         </ul>
                      </div>
                      <!-- Col End-->
+                      
                   </div>
                   <!-- Logo Area End-->
                </div>
@@ -129,72 +208,7 @@ if (isset($_POST['cerrar_sesion'])) {
                         aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"><i class="icon icon-menu"></i></span></button>
                      <!-- End of Navbar toggler-->
                      <div class="collapse navbar-collapse justify-content-start" id="navbarSupportedContent">
-                        <ul class="navbar-nav">
-                           <li class="nav-item dropdown active"><a class="nav-link" href="#" data-toggle="dropdown">Inicio<i class="fa fa-angle-down"></i></a>
-                              <ul class="dropdown-menu" role="menu">
-                                 <li class="active"><a href="index.html">Inicio</a></li>
-                                 <li><a href="#">Home Two</a></li>
-                                 
-                              </ul>
-                           </li>
-                           <!-- li end-->
-                           <li class="nav-item dropdown"><a class="nav-link" href="#" data-toggle="dropdown">Company<i class="fa fa-angle-down"></i></a>
-                              <ul class="dropdown-menu" role="menu">
-                                 <li><a href="#">About Us </a></li>
-                                 <li><a href="#">Our Team</a></li>
-                                 <li><a href="#">Pricing </a></li>
-                                 <li><a href="#">Faq</a></li>
-                                 <li><a href="#">Gallery</a></li>
-                              </ul>
-                           </li>
-                           <!-- li end-->
-                           <li class="nav-item dropdown"><a class="nav-link" href="#" data-toggle="dropdown">Projects<i class="fa fa-angle-down"></i></a>
-                              <ul class="dropdown-menu" role="menu">
-                                 <li><a href="#">Projects All</a></li>
-                                 <li><a href="#">Projects Single</a></li>
-                              </ul>
-                           </li>
-                           <!-- li end-->
-                           <li class="nav-item dropdown"><a class="nav-link" href="#" data-toggle="dropdown">Services<i class="fa fa-angle-down"></i></a>
-                              <ul class="dropdown-menu" role="menu">
-                                 <li><a href="#">Services All</a></li>
-                                 <li><a href="#">Services Single</a></li>
-                              </ul>
-                           </li>
-                           <!-- li end-->
-                           <li class="nav-item dropdown"><a class="nav-link" href="#" data-toggle="dropdown">Features<i class="fa fa-angle-down"></i></a>
-                              <ul class="dropdown-menu" role="menu">
-                                 <li><a href="#">Addons 1</a></li>
-                                 <li><a href="#">Addons 2</a></li>
-                                 <li><a href="#">Addons 3</a></li>
-                                 <li><a href="#">404</a></li>
-                                 <li class="dropdown-submenu"><a class="nav-link" href="#" data-toggle="dropdown">Parent Menu</a>
-                                    <ul class="dropdown-menu">
-                                       <li><a href="#">Child Menu 1</a></li>
-                                       <li><a href="#">Child Menu 2</a></li>
-                                       <li><a href="#">Child Menu 3</a></li>
-                                    </ul>
-                                 </li>
-                              </ul>
-                           </li>
-                           <!-- li end-->
-                           <li class="nav-item dropdown">
-                           <a class="nav-link" href="#" data-toggle="dropdown">
-                              News
-                              <i class="fa fa-angle-down"></i>
-                           </a>
-                              <ul class="dropdown-menu" role="menu">
-                                 <li><a href="#">Blog With Right Sidebar</a></li>
-                                 <li><a href="#">Blog With Left Sidebar</a></li>
-                                 <li><a href="#">Single News</a></li>
-                              </ul>
-                           </li>
-                           <!-- li end-->
-                           <li class="nav-item dropdown">
-                                 <a href="#">Contact</a>
-                           </li>
-                        </ul>
-                        <!--Nav ul end-->
+               
                      </div>
                      <form method="post" class="form-inline">
                 <button type="submit" name="cerrar_sesion" class="top-right-btn btn btn-primary">
@@ -214,10 +228,10 @@ if (isset($_POST['cerrar_sesion'])) {
          <!-- Header end-->
       </div>
 
-      <?php
+    <?php
 if (isset($_SESSION['usuario'])) {
     $query = $cnnPDO->prepare('SELECT * FROM cursos WHERE usuario = :usuario');
-    $query->bindParam(':usuario', $_SESSION['usuario']);
+    $query->bindParam(':usuario', $_SESSION['correo']);
     $query->execute();
 
     echo '<div class="row justify-content-center mt-4 mb-4">';
@@ -247,70 +261,184 @@ if (isset($_SESSION['usuario'])) {
 }
 ?>
 
-<div class="carousel slide" id="main-slide" data-ride="carousel">
-         <!-- Indicators-->
-         <ol class="carousel-indicators visible-lg visible-md">
-            <li class="active" data-target="#main-slide" data-slide-to="0"></li>
-            <li data-target="#main-slide" data-slide-to="1"></li>
-            <li data-target="#main-slide" data-slide-to="2"></li>
-         </ol>
-         <!-- Indicators end-->
-         <!-- Carousel inner-->
-         <div class="carousel-inner">
-            <div class="carousel-item active" style="background-image:url(images/slider/bj1.png);">
-               <div class="container">
-                  <div class="slider-content text-left">
-                     <div class="col-md-12">
-                        <h2 class="slide-title title-light">Cursos para paginas web</h2>
-                        <h3 class="slide-sub-title">Javascript, Html5 y CCS</h3>
-                        <p class="slider-description lead">Descubre el arte de la creación web y lleva tus ideas al mundo digital. <br/> Explora el diseño interactivo y aprende a cautivar a tus usuarios desde la primera visita.</p>
-                        <p><a class="slider btn btn-primary" href="#">Mirar Cursos</a></p>
-                     </div>
-                     <!-- Col end-->
-                  </div>
-                  <!-- Slider content end-->
-               </div>
-               <!-- Container end-->
+<section class="main-container no-padding" id="main-container">
+   <div class="ts-services" id="ts-services">
+      <div class="container">
+         <div class="row text-center">
+            <div class="col-md-12">
+               <h2 class="section-title"><span>Explora contenidos de programación</span>Lenguajes y Herramientas</h2>
+               <p class="mt-4">Buscar curso:</p>
+               <input type="text" id="buscador" class="form-control mt-3" placeholder="Buscar lenguaje o herramienta...">
             </div>
-            <!-- Carousel item 1 end-->
-            <div class="carousel-item" style="background-image:url(images/slider/bj2.jpg);">
-               <div class="container">
-                  <div class="slider-content text-center">
-                     <div class="col-md-12">
-                        <h2 class="slide-title title-light">Inteligencia artificial</h2>
-                        <h3 class="slide-sub-title">Chatgpt</h3>
-                        <p class="slider-description lead">Descubre el poder transformador de la inteligencia artificial y desata nuevas posibilidades en la era digital.</p>
-                        <p><a class="slider btn btn-primary" href="#">Mirar Cursos</a></p>
-                     </div>
-                     <!-- Col end-->
-                  </div>
-                  <!-- Slider content end-->
-               </div>
-               <!-- Container end-->
-            </div>
-            <!-- Carousel item 2 end-->
-            <div class="carousel-item" style="background-image:url(images/slider/b3.jpg);">
-               <div class="container">
-                  <div class="slider-content text-right">
-                     <div class="col-md-12">
-                        <h2 class="slide-title title-light">Bases de datos</h2>
-                        <h3 class="slide-sub-title">MySQL y Oracle</h3>
-                        <p class="slider-description lead">Explora el mundo de las bases de datos y descubre cómo organizar la información de manera eficiente.</p>
-                        <p><a class="slider btn btn-primary" href="#">Mirar Cursos</a></p>
-                     </div>
-                     <!-- Col end-->
-                  </div>
-                  <!-- Slider content end-->
-               </div>
-               <!-- Container end-->
-            </div>
-            <!-- Carousel item 3 end-->
          </div>
-         <!-- Carousel inner end-->
-         <!-- Controllers--><a class="left carousel-control carousel-control-prev" href="#main-slide" data-slide="prev"><span><i class="fa fa-angle-left"></i></span></a>
-         <a class="right carousel-control carousel-control-next" href="#main-slide" data-slide="next"><span><i class="fa fa-angle-right"></i></span></a>
+         <br>
+         <div class="row" id="cards-container">
+            <div class="col-lg-4 col-md-12 card-item">
+               <div class="ts-service-box">
+                  <div class="ts-service-image-wrapper">
+                     <img class="img-fluid" src="images/services/serv1.jpg" alt="Python">
+                  </div>
+                  <div class="ts-service-content">
+                     <h3 class="service-title">Python</h3>
+                     <p>Lenguaje versátil usado en ciencia de datos, backend y automatización.</p>
+                     <p><a class="link-more" href="#">Unirse al curso <i class="icon icon-right-arrow2"></i></a></p>
+                  </div>
+               </div>
+            </div>
+            <div class="col-lg-4 col-md-12 card-item">
+               <div class="ts-service-box">
+                  <div class="ts-service-image-wrapper">
+                     <img class="img-fluid" src="images/services/serv2.jpg" alt="Java">
+                  </div>
+                  <div class="ts-service-content">
+                     <h3 class="service-title">Java</h3>
+                     <p>Popular en desarrollo empresarial, Android y sistemas robustos.</p>
+                     <p><a class="link-more" href="#">Unirse al curso <i class="icon icon-right-arrow2"></i></a></p>
+                  </div>
+               </div>
+            </div>
+            <div class="col-lg-4 col-md-12 card-item">
+               <div class="ts-service-box">
+                  <div class="ts-service-image-wrapper">
+                     <img class="img-fluid" src="images/services/serv3.jpg" alt="JavaScript">
+                  </div>
+                  <div class="ts-service-content">
+                     <h3 class="service-title">JavaScript</h3>
+                     <p>Lenguaje clave para el desarrollo web interactivo en el navegador.</p>
+                     <p><a class="link-more" href="#">Unirse al curso <i class="icon icon-right-arrow2"></i></a></p>
+                  </div>
+               </div>
+            </div>
+            <div class="col-lg-4 col-md-12 card-item">
+               <div class="ts-service-box">
+                  <div class="ts-service-image-wrapper">
+                     <img class="img-fluid" src="images/services/serv4.png" alt="MySQL">
+                  </div>
+                  <div class="ts-service-content">
+                     <h3 class="service-title">MySQL</h3>
+                     <p>Sistema de gestión de bases de datos relacional ampliamente usado.</p>
+                     <p><a class="link-more" href="#">Unirse al curso <i class="icon icon-right-arrow2"></i></a></p>
+                  </div>
+               </div>
+            </div>
+            <div class="col-lg-4 col-md-12 card-item">
+               <div class="ts-service-box">
+                  <div class="ts-service-image-wrapper">
+                     <img class="img-fluid" src="images/services/serv5.png" alt="PHP">
+                  </div>
+                  <div class="ts-service-content">
+                     <h3 class="service-title">PHP</h3>
+                     <p>Lenguaje de scripting usado en servidores para construir sitios web dinámicos.</p>
+                     <p><a class="link-more" href="#">Unirse al curso <i class="icon icon-right-arrow2"></i></a></p>
+                  </div>
+               </div>
+            </div>
+            <div class="col-lg-4 col-md-12 card-item">
+               <div class="ts-service-box">
+                  <div class="ts-service-image-wrapper">
+                     <img class="img-fluid" src="images/services/serv6.svg" alt="Node.js">
+                  </div>
+                  <div class="ts-service-content">
+                     <h3 class="service-title">Node.js</h3>
+                     <p>Entorno para ejecutar JavaScript del lado del servidor, ideal para apps en tiempo real.</p>
+                     <p><a class="link-more" href="#">Unirse al curso <i class="icon icon-right-arrow2"></i></a></p>
+                  </div>
+               </div>
+            </div>
+            <div class="col-lg-4 col-md-12 card-item">
+               <div class="ts-service-box">
+                  <div class="ts-service-image-wrapper">
+                     <img class="img-fluid" src="images/services/serv7.jpg" alt="SQL Server">
+                  </div>
+                  <div class="ts-service-content">
+                     <h3 class="service-title">SQL Server</h3>
+                     <p>Base de datos relacional de Microsoft para soluciones empresariales.</p>
+                     <p><a class="link-more" href="#">Unirse al curso <i class="icon icon-right-arrow2"></i></a></p>
+                  </div>
+               </div>
+            </div>
+            <div class="col-lg-4 col-md-12 card-item">
+               <div class="ts-service-box">
+                  <div class="ts-service-image-wrapper">
+                     <img class="img-fluid" src="images/services/serv8.png" alt="C#">
+                  </div>
+                  <div class="ts-service-content">
+                     <h3 class="service-title">C#</h3>
+                     <p>Lenguaje moderno desarrollado por Microsoft para aplicaciones web, móviles y juegos.</p>
+                     <p><a class="link-more" href="#">Unirse al curso <i class="icon icon-right-arrow2"></i></a></p>
+                  </div>
+               </div>
+            </div>
+            <div class="col-lg-4 col-md-12 card-item">
+               <div class="ts-service-box">
+                  <div class="ts-service-image-wrapper">
+                     <img class="img-fluid" src="images/services/serv9.png" alt="Laravel">
+                  </div>
+                  <div class="ts-service-content">
+                     <h3 class="service-title">Laravel</h3>
+                     <p>Framework de PHP elegante y potente para desarrollar aplicaciones web robustas.</p>
+                     <p><a class="link-more" href="#">Unirse al curso <i class="icon icon-right-arrow2"></i></a></p>
+                  </div>
+               </div>
+            </div>
+            <div class="col-lg-4 col-md-12 card-item">
+               <div class="ts-service-box">
+                  <div class="ts-service-image-wrapper">
+                     <img class="img-fluid" src="images/services/serv10.png" alt="React">
+                  </div>
+                  <div class="ts-service-content">
+                     <h3 class="service-title">React</h3>
+                     <p>Biblioteca de JavaScript para construir interfaces de usuario reactivas y modernas.</p>
+                     <p><a class="link-more" href="#">Unirse al curso <i class="icon icon-right-arrow2"></i></a></p>
+                  </div>
+               </div>
+            </div>
+            <div class="col-lg-4 col-md-12 card-item">
+               <div class="ts-service-box">
+                  <div class="ts-service-image-wrapper">
+                     <img class="img-fluid" src="images/services/serv11.png" alt="MongoDB">
+                  </div>
+                  <div class="ts-service-content">
+                     <h3 class="service-title">MongoDB</h3>
+                     <p>Base de datos NoSQL orientada a documentos, ideal para datos flexibles y escalables.</p>
+                     <p><a class="link-more" href="#">Unirse al curso <i class="icon icon-right-arrow2"></i></a></p>
+                  </div>
+               </div>
+            </div>
+            <div class="col-lg-4 col-md-12 card-item">
+               <div class="ts-service-box">
+                  <div class="ts-service-image-wrapper">
+                     <img class="img-fluid" src="images/services/serv12.jpg" alt="Python IA">
+                  </div>
+                  <div class="ts-service-content">
+                     <h3 class="service-title">Python para IA</h3>
+                     <p>Uso de Python con librerías como TensorFlow y PyTorch en inteligencia artificial.</p>
+                     <p><a class="link-more" href="#">Unirse al curso <i class="icon icon-right-arrow2"></i></a></p>
+                  </div>
+               </div>
+            </div>
+         </div>
       </div>
-      <!-- Carousel end-->
+   </div>
+</section>
+<style>
+  #buscador {
+    font-size: 1.2rem;
+    padding: 12px 15px;
+    border: 2px solid #d32f2f; /* rojo fuerte */
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(211, 47, 47, 0.6); /* sombra roja */
+    background-color: #fdecea; /* fondo rojo muy suave */
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  #buscador:focus {
+    outline: none;
+    border-color: #9a0000; /* rojo más oscuro */
+    box-shadow: 0 0 12px rgba(154, 0, 0, 0.8);
+    background-color: #ffffff;
+  }
+</style>
 
          <!-- Footer Main-->
          <div class="copyright">

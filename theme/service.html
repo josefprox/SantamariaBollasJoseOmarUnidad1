@@ -52,6 +52,58 @@
           color: #000 !important;
       }
   </style>
+  <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lenguajes y Herramientas</title>
+  <style>
+    .ts-service-image-wrapper {
+       width: 100%;
+       height: 200px; /* altura fija para todas las imágenes */
+       display: flex;
+       justify-content: center;
+       align-items: center;
+       overflow: hidden;
+       background-color: #f5f5f5;
+       border-radius: 8px;
+    }
+
+    .ts-service-image-wrapper img {
+       width: 100%;
+       height: 100%;
+       object-fit: cover; /* ajusta la imagen sin deformar */
+       display: block;
+    }
+
+    /* Opcional: algo de estilo para el contenedor y textos */
+    .ts-service-box {
+      box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+      border-radius: 8px;
+      overflow: hidden;
+      background-color: white;
+      margin-bottom: 24px;
+    }
+
+    .ts-service-content {
+      padding: 15px;
+    }
+
+    .service-title {
+      margin-top: 10px;
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+
+    .link-more {
+      text-decoration: none;
+      color: #007bff;
+      font-weight: 500;
+    }
+
+    .link-more:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 
 <body>
@@ -159,16 +211,17 @@
       </div>
       <!-- Banner area end-->
       
-    <section class="main-container no-padding" id="main-container">
+   <section class="main-container no-padding" id="main-container">
    <div class="ts-services" id="ts-services">
       <div class="container">
          <div class="row text-center">
             <div class="col-md-12">
                <h2 class="section-title"><span>Explora contenidos de programación</span>Lenguajes y Herramientas</h2>
-               <p class="mt-4">Buscar curso:</p>
-               <input type="text" id="buscador" class="form-control mt-3" placeholder="Buscar lenguaje o herramienta...">
+               <p class="mt-2">Buscar curso:</p>
+               <input type="text" id="buscador" class="form-control mt-1" placeholder="Buscar lenguaje o herramienta...">
             </div>
          </div>
+         <br>
          <div class="row" id="cards-container">
             <div class="col-lg-4 col-md-12 card-item">
                <div class="ts-service-box">
@@ -178,7 +231,7 @@
                   <div class="ts-service-content">
                      <h3 class="service-title">Python</h3>
                      <p>Lenguaje versátil usado en ciencia de datos, backend y automatización.</p>
-                     <p><a class="link-more" href="#">Leer más <i class="icon icon-right-arrow2"></i></a></p>
+                     <p><a class="link-more" href="form.php">Inicia sesión <i class="icon icon-right-arrow2"></i></a></p>
                   </div>
                </div>
             </div>
@@ -190,7 +243,7 @@
                   <div class="ts-service-content">
                      <h3 class="service-title">Java</h3>
                      <p>Popular en desarrollo empresarial, Android y sistemas robustos.</p>
-                     <p><a class="link-more" href="#">Leer más <i class="icon icon-right-arrow2"></i></a></p>
+                     <p><a class="link-more" href="form.php">Inicia sesión <i class="icon icon-right-arrow2"></i></a></p>
                   </div>
                </div>
             </div>
@@ -202,7 +255,7 @@
                   <div class="ts-service-content">
                      <h3 class="service-title">JavaScript</h3>
                      <p>Lenguaje clave para el desarrollo web interactivo en el navegador.</p>
-                     <p><a class="link-more" href="#">Leer más <i class="icon icon-right-arrow2"></i></a></p>
+                     <p><a class="link-more" href="form.php">Inicia sesión <i class="icon icon-right-arrow2"></i></a></p>
                   </div>
                </div>
             </div>
@@ -214,7 +267,7 @@
                   <div class="ts-service-content">
                      <h3 class="service-title">MySQL</h3>
                      <p>Sistema de gestión de bases de datos relacional ampliamente usado.</p>
-                     <p><a class="link-more" href="#">Leer más <i class="icon icon-right-arrow2"></i></a></p>
+                     <p><a class="link-more" href="form.php">Inicia sesión <i class="icon icon-right-arrow2"></i></a></p>
                   </div>
                </div>
             </div>
@@ -226,7 +279,7 @@
                   <div class="ts-service-content">
                      <h3 class="service-title">PHP</h3>
                      <p>Lenguaje de scripting usado en servidores para construir sitios web dinámicos.</p>
-                     <p><a class="link-more" href="#">Leer más <i class="icon icon-right-arrow2"></i></a></p>
+                     <p><a class="link-more" href="form.php">Inicia sesión <i class="icon icon-right-arrow2"></i></a></p>
                   </div>
                </div>
             </div>
@@ -238,11 +291,11 @@
                   <div class="ts-service-content">
                      <h3 class="service-title">Node.js</h3>
                      <p>Entorno para ejecutar JavaScript del lado del servidor, ideal para apps en tiempo real.</p>
-                     <p><a class="link-more" href="#">Leer más <i class="icon icon-right-arrow2"></i></a></p>
+                     <p><a class="link-more" href="form.php">Inicia sesión <i class="icon icon-right-arrow2"></i></a></p>
                   </div>
                </div>
             </div>
-                        <div class="col-lg-4 col-md-12 card-item">
+            <div class="col-lg-4 col-md-12 card-item">
                <div class="ts-service-box">
                   <div class="ts-service-image-wrapper">
                      <img class="img-fluid" src="images/services/serv7.jpg" alt="SQL Server">
@@ -250,11 +303,10 @@
                   <div class="ts-service-content">
                      <h3 class="service-title">SQL Server</h3>
                      <p>Base de datos relacional de Microsoft para soluciones empresariales.</p>
-                     <p><a class="link-more" href="#">Leer más <i class="icon icon-right-arrow2"></i></a></p>
+                     <p><a class="link-more" href="form.php">Inicia sesión <i class="icon icon-right-arrow2"></i></a></p>
                   </div>
                </div>
             </div>
-
             <div class="col-lg-4 col-md-12 card-item">
                <div class="ts-service-box">
                   <div class="ts-service-image-wrapper">
@@ -263,11 +315,10 @@
                   <div class="ts-service-content">
                      <h3 class="service-title">C#</h3>
                      <p>Lenguaje moderno desarrollado por Microsoft para aplicaciones web, móviles y juegos.</p>
-                     <p><a class="link-more" href="#">Leer más <i class="icon icon-right-arrow2"></i></a></p>
+                     <p><a class="link-more" href="form.php">Inicia sesión <i class="icon icon-right-arrow2"></i></a></p>
                   </div>
                </div>
             </div>
-
             <div class="col-lg-4 col-md-12 card-item">
                <div class="ts-service-box">
                   <div class="ts-service-image-wrapper">
@@ -276,11 +327,10 @@
                   <div class="ts-service-content">
                      <h3 class="service-title">Laravel</h3>
                      <p>Framework de PHP elegante y potente para desarrollar aplicaciones web robustas.</p>
-                     <p><a class="link-more" href="#">Leer más <i class="icon icon-right-arrow2"></i></a></p>
+                     <p><a class="link-more" href="form.php">Inicia sesión <i class="icon icon-right-arrow2"></i></a></p>
                   </div>
                </div>
             </div>
-
             <div class="col-lg-4 col-md-12 card-item">
                <div class="ts-service-box">
                   <div class="ts-service-image-wrapper">
@@ -289,11 +339,10 @@
                   <div class="ts-service-content">
                      <h3 class="service-title">React</h3>
                      <p>Biblioteca de JavaScript para construir interfaces de usuario reactivas y modernas.</p>
-                     <p><a class="link-more" href="#">Leer más <i class="icon icon-right-arrow2"></i></a></p>
+                     <p><a class="link-more" href="form.php">Inicia sesión <i class="icon icon-right-arrow2"></i></a></p>
                   </div>
                </div>
             </div>
-
             <div class="col-lg-4 col-md-12 card-item">
                <div class="ts-service-box">
                   <div class="ts-service-image-wrapper">
@@ -302,11 +351,10 @@
                   <div class="ts-service-content">
                      <h3 class="service-title">MongoDB</h3>
                      <p>Base de datos NoSQL orientada a documentos, ideal para datos flexibles y escalables.</p>
-                     <p><a class="link-more" href="#">Leer más <i class="icon icon-right-arrow2"></i></a></p>
+                     <p><a class="link-more" href="form.php">Inicia sesión <i class="icon icon-right-arrow2"></i></a></p>
                   </div>
                </div>
             </div>
-
             <div class="col-lg-4 col-md-12 card-item">
                <div class="ts-service-box">
                   <div class="ts-service-image-wrapper">
@@ -315,13 +363,33 @@
                   <div class="ts-service-content">
                      <h3 class="service-title">Python para IA</h3>
                      <p>Uso de Python con librerías como TensorFlow y PyTorch en inteligencia artificial.</p>
-                     <p><a class="link-more" href="#">Leer más <i class="icon icon-right-arrow2"></i></a></p>
+                     <p><a class="link-more" href="form.php">Inicia sesión <i class="icon icon-right-arrow2"></i></a></p>
                   </div>
                </div>
+            </div>
          </div>
       </div>
    </div>
 </section>
+
+<style>
+  #buscador {
+    font-size: 1.2rem;
+    padding: 12px 15px;
+    border: 2px solid #d32f2f; /* rojo fuerte */
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(211, 47, 47, 0.6); /* sombra roja */
+    background-color: #fdecea; /* fondo rojo muy suave */
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  #buscador:focus {
+    outline: none;
+    border-color: #9a0000; /* rojo más oscuro */
+    box-shadow: 0 0 12px rgba(154, 0, 0, 0.8);
+    background-color: #ffffff;
+  }
+</style>
 
 <script>
    document.getElementById("buscador").addEventListener("input", function() {

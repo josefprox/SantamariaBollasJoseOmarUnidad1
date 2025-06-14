@@ -18,7 +18,7 @@ if (isset($_POST['correo']) && isset($_POST['curso'])) {
    $curso = trim($_POST['curso']);
 
    if (!empty($correo) && !empty($curso)) {
-      $query = $cnnPDO->prepare('INSERT INTO cursos (correo, curso) VALUES (?, ?)');
+      $query = $cnnPDO->prepare('INSERT INTO cursos (usuario, curso) VALUES (?, ?)');
       $query->execute([$correo, $curso]);
       header("Location: " . $_SERVER['PHP_SELF']);
       exit();
@@ -176,12 +176,12 @@ if (isset($_SESSION['usuario'])) {
 
     echo '<div class="col-lg-4" style="margin-left: 70%;">'; 
     echo '<fieldset>';
-    echo '<select class="fa fa-angle-down form-control" style="margin-top: 10px;" aria-label="Default select example" name="nombre">';
+    echo '<select class="fa fa-angle-down form-control" style="margin-top: 10px;" aria-label="Default select example" name="correo">';
     echo '<option selected>Selecciona un usuario</option>';
     $queryUsuarios = $cnnPDO->prepare('SELECT * FROM usuarios');
     $queryUsuarios->execute();
     while ($campo = $queryUsuarios->fetch()) {
-        echo '<option>' . $campo['usuario'] . '</option>';
+        echo '<option>' . $campo['correo'] . '</option>';
     }
     echo '</select>';
     echo '</fieldset>';
@@ -218,7 +218,7 @@ if (isset($_SESSION['usuario'])) {
         echo '<div class="col-md-4 mb-3">';
         echo '<div class="card ts-feature-box">';
         echo '<div class="card-body text-center">';
-        echo '<h5 class="card-title ts-feature-title" style="font-size: 24px; margin-bottom: 10px;">' . $campo['Correo'] . '</h5>';
+        echo '<h5 class="card-title ts-feature-title" style="font-size: 24px; margin-bottom: 10px;">' . $campo['usuario'] . '</h5>';
         echo '<p class="custom-course-list">Cursos:</p>';
         echo '<ul class="custom-course-list">';
         $cursos = explode(',', $campo['cursos']);
