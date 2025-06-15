@@ -1,55 +1,65 @@
-# Logicraft - Bootstrap Business Template ➜ [Demo](https://furioustheme-logicraft.netlify.app/)
+# Cursos Data - Plataforma de Administración de Cursos
 
-[![Logicraft](https://furioustheme.com/products/logicraft.png)](https://furioustheme-logicraft.netlify.app/)
+Cursos Data es una aplicación web desarrollada para administrar y asignar cursos a los usuarios registrados en el sistema. Está diseñada principalmente para instituciones educativas, academias o administradores que necesiten llevar el control de qué cursos están disponibles y cuáles han sido asignados a cada usuario.
 
-<!-- download -->
-## Download And installation
+---
 
-Download this template from [Github](https://github.com/furioustheme/logicraft/archive/refs/heads/main.zip)
+## Descripción general
 
-<!-- installation -->
-### Basic Usages
+La plataforma permite:
 
-After downloading the template, you can simply edit the HTML and CSS files from the `theme` folder. To preview the changes you make to the code, you can open the index.html file in your web browser.
+- Visualizar usuarios registrados.
+- Mostrar los cursos asignados a cada usuario.
+- Ver los cursos disponibles en el sistema.
+- Asignar nuevos cursos a los usuarios desde un formulario intuitivo.
+- Mostrar tarjetas visuales con información clara de cada usuario y sus cursos asignados.
 
-### Advanced Usage
+---
 
-For advanced usage, you have some prerequisites to install. Then you can run it on your localhost. You can view the package.json file to see which scripts are included.
+## Instalación y uso básico
 
-#### Install prerequisites (once for a machine)
+1. Descarga los archivos del proyecto y colócalos en tu servidor local (por ejemplo, XAMPP, WAMP o MAMP).
+2. Configura la conexión a la base de datos en el archivo llamado `db_conexion.php`.
+3. Asegúrate de tener una base de datos creada con las tablas necesarias: `usuarios` y `cursos`.
+4. Abre el archivo principal del proyecto (como `index.php`) en tu navegador para empezar a utilizar la plataforma.
 
-* **Node Installation:** [Install node js](https://nodejs.org/en/download/)
-* **Gulp Installation:** Install gulp globally from your terminal
+---
 
-```
-npm install --global gulp-cli
-```
+## Requisitos
 
-Or visit the original [Gulp docs](https://gulpjs.com/docs/en/getting-started/quick-start)
+- Servidor local con PHP (versión 7.4 o superior).
+- Base de datos MySQL o MariaDB.
+- Navegador web actualizado.
 
-#### Local setup
+---
 
-After successfully installing those dependencies, open this theme with any IDE [[VS Code](https://code.visualstudio.com/) recommended], and then open the internal terminal of IDM [vs code shortcut <code>ctrl/cmd+\`</code>]
+## Estructura del sistema
 
-* Install dependencies
+- El sistema cuenta con inicio de sesión y validación de sesión activa.
+- Una interfaz para asignar cursos mediante formularios.
+- Tarjetas informativas que muestran los cursos por usuario.
+- Si un curso no tiene un usuario asignado, se muestra como "Cursos disponibles".
+- Diseño responsive adaptado a dispositivos móviles usando Bootstrap.
+- Estilos personalizados con énfasis en una interfaz visual moderna.
 
-```
-npm install
-```
+---
 
-* Run locally
+## Tecnologías utilizadas
 
-```
-npm run dev
-```
+- PHP para la lógica del servidor.
+- MySQL para la base de datos.
+- HTML, CSS y Bootstrap para el diseño.
+- JavaScript opcional para validaciones o interactividad adicional.
+- PHPMailer si se desea incluir funciones de envío de correos.
 
-After that, it will open up a preview of the template in your default browser, watch for changes to theme files, and live reload the browser when changes are saved.
+---
 
-<!-- licence -->
-## License
+## Licencia
 
-Copyright (c) 2015 - Present, Designed & Developed by [Furioustheme](https://furioustheme.com)
+Este proyecto puede ser utilizado y modificado libremente. Las imágenes incluidas (si las hay) son solo demostrativas y podrían requerir licencia para uso comercial.
 
-**Code License:** Released under the [MIT](https://github.com/furioustheme/logicraft/blob/main/LICENSE) license.
+---
 
-**Image license:** The images are only for demonstration purposes. They have their license, we don't have permission to share those images.
+## Autor
+
+Desarrollado como una solución personalizada para la administración educativa. Se puede adaptar según las necesidades de cada institución o plataforma.
