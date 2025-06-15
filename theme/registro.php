@@ -4,6 +4,9 @@ session_start();
 
 $mensaje = '';
 
+$siteKey = '6LfUgmErAAAAANhWz3D9BD1tLEsfF3muJPWPZ3n2';       
+$secretKey = '6LfUgmErAAAAAGkRZiGg6i3gTw0UhruJ7Vw4Pmb4';  
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $usuario = $_POST['usuario'];
     $clave = $_POST['clave'];
@@ -11,28 +14,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $correo = $_POST['correo'];
     $curso = $_POST['curso'];
 
-    if (!empty($usuario) && !empty($clave) && !empty($correo) && !empty($confirmar_clave)) {
-        if ($clave === $confirmar_clave) {
-            // Encriptar la clave
-            $claveHashed = password_hash($clave, PASSWORD_DEFAULT);
+    // Validar reCAPTCHA
+    if (isset($_POST['g-recaptcha-response'])) {
+        $captcha = $_POST['g-recaptcha-response'];
+        $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=$secretKey&response=$captcha");
+        $responseData = json_decode($response);
 
-            $query = $cnnPDO->prepare("INSERT INTO usuarios (usuario, clave, correo, curso) VALUES (:usuario, :clave, :correo, :curso)");
-            $query->bindParam(':usuario', $usuario);
-            $query->bindParam(':clave', $claveHashed); 
-            $query->bindParam(':correo', $correo);
-            $query->bindParam(':curso', $curso);
+        if ($responseData->success) {
+            // Validar formulario
+            if (!empty($usuario) && !empty($clave) && !empty($correo) && !empty($confirmar_clave)) {
+                if ($clave === $confirmar_clave) {
+                    $claveHashed = password_hash($clave, PASSWORD_DEFAULT);
 
-            if ($query->execute()) {
-                header("Location: form.php");
-                exit(); 
+                    $query = $cnnPDO->prepare("INSERT INTO usuarios (usuario, clave, correo, curso) VALUES (:usuario, :clave, :correo, :curso)");
+                    $query->bindParam(':usuario', $usuario);
+                    $query->bindParam(':clave', $claveHashed);
+                    $query->bindParam(':correo', $correo);
+                    $query->bindParam(':curso', $curso);
+
+                    if ($query->execute()) {
+                        header("Location: form.php");
+                        exit();
+                    } else {
+                        $mensaje = "Error al registrar usuario.";
+                    }
+                } else {
+                    $mensaje = "Las contraseñas no coinciden.";
+                }
             } else {
-                $mensaje = "Error al registrar usuario.";
+                $mensaje = "Todos los campos obligatorios deben ser llenados.";
             }
         } else {
-            $mensaje = "Las contraseñas no coinciden.";
+            $mensaje = "Verifica que no eres un robot.";
         }
     } else {
-        $mensaje = "Todos los campos obligatorios deben ser llenados.";
+        $mensaje = "Por favor completa el reCAPTCHA.";
     }
 }
 ?>
@@ -91,6 +107,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           color: #000 !important;
       }
   </style>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 
 <body>
@@ -189,11 +206,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
          </div>
          <div class="col-lg-7 qutoe-form-inner-le">
+            <?php if (!empty($mensaje)): ?>
+            <div class="alert alert-danger"><?php echo $mensaje; ?></div>
+        <?php endif; ?>
             <form class="contact-form" method="POST" id="formRegistro">
                <h2 class="column-title"><span>Crea tu cuenta en segundos</span>Formulario de Registro</h2>
-               <?php if (!empty($mensaje)): ?>
-               <div class="alert alert-danger"><?php echo $mensaje; ?></div>
-               <?php endif; ?>
                <div class="row">
                   <div class="col-lg-12">
                      <div class="form-group">
@@ -221,6 +238,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                      </div>
                   </div>
                </div>
+               <div class="g-recaptcha" data-sitekey="6LfUgmErAAAAANhWz3D9BD1tLEsfF3muJPWPZ3n2"></div>
                <div class="text-right">
                   <button class="btn btn-primary tw-mt-30" type="submit" name="registrar">Registrarse</button>
                </div>

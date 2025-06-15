@@ -1,7 +1,5 @@
 <?php
 ob_start();
-?>
-<?php
 require_once 'db_conexion.php';
 session_start();
 
@@ -19,13 +17,11 @@ if (isset($_POST['login'])) {
         $userData = $query->fetch(PDO::FETCH_ASSOC);
 
         if ($userData && password_verify($clave, $userData['clave'])) {
-            // Guardar datos del usuario en la sesión
             $_SESSION['usuario'] = $userData['usuario'];
             $_SESSION['correo'] = $userData['correo'];
             $_SESSION['nombre'] = $userData['nombre'];
             $_SESSION['curso'] = $userData['curso'];
 
-            // Redirigir según el tipo de usuario
             if ($userData['usuario'] === 'admin') {
                 header("location: indexadmin.php");
             } else {
@@ -33,14 +29,14 @@ if (isset($_POST['login'])) {
             }
             exit();
         } else {
-            $alertMessage .= '<script>mostrarToast("Credenciales incorrectas", "error");</script>';
+            $alertMessage = 'mostrarToast("Credenciales incorrectas", "error");';
         }
     } else {
-        $alertMessage .= '<script>mostrarToast("Usuario o contraseña vacíos", "error");</script>';
+        $alertMessage = 'mostrarToast("Usuario o contraseña vacíos", "error");';
     }
 }
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -174,42 +170,97 @@ if (isset($_POST['login'])) {
                   </nav>
                   <!-- Collapse end-->
       
-      <section class="quote-area solid-bg" id="quote-area">
-         <div class="container">
-            <div class="row">
-               <div class="col-lg-5">
-                  <div class="quote_form">
-                     <h2 class="column-title "><span>¡Estamos felices de verte!</span>¡Bienvenido de nuevo!</h2>
-                     <div class="quote-img">
-                        <img class="img-fluid" src="images/curso.webp" alt="img">
+     <section class="quote-area solid-bg" id="quote-area">
+      <div class="container">
+         <div class="row">
+            <div class="col-lg-5">
+               <div class="quote_form">
+                  <h2 class="column-title "><span>¡Estamos felices de verte!</span>¡Bienvenido de nuevo!</h2>
+                  <div class="quote-img">
+                     <img class="img-fluid" src="images/curso.webp" alt="img">
+                  </div>
+               </div>
+            </div>
+            <div class="col-lg-7 qutoe-form-inner-le">
+               <form class="contact-form" method="POST">
+                  <h2 class="column-title "><span>¡Listo para sumergirte en tu cuenta. Inicia sesión ahora!</span>Inicio de Sesión</h2>
+                  <div class="row">
+                     <div class="col-lg-12">
+                        <div class="form-group">
+                           <input class="form-control form-name" name="usuario" placeholder="Usuario o correo" type="text" required>
+                        </div>
+                     </div>
+                     <div class="col-lg-12">
+                        <div class="form-group">
+                           <input class="form-control form-name" name="clave" placeholder="Clave" type="password" required>
+                        </div>
                      </div>
                   </div>
-                  <!-- Quote form end-->
-               </div>
-               <!-- Col end-->
-               <div class="col-lg-7 qutoe-form-inner-le">
-                     <form class="contact-form" id="a" method="POST">
-                        <h2 class="column-title "><span>¡Listo para sumergirte en tu cuenta. Inicia sesión ahora!</span>Inicio de Sesión</h2>
-                        <div class="row">
-                           <div class="col-lg-12">
-                              <div class="form-group">
-                                 <input class="form-control form-name" id="email" name="usuario" placeholder="Usuario o correo" type="text" required>
-                              </div>
-                           </div>
-                           <!-- Col end-->
-                           <div class="col-lg-12">
-                              <div class="form-group">
-                                 <input class="form-control form-name" id="name" name="clave" placeholder="Clave" type="password" required>
-                              </div>
-                           </div>
-                           <!-- Col 12 end-->
-                        </div>
-                        <!-- Form row end-->
-                        <div class="text-right">
-                           <button class="btn btn-primary tw-mt-30" type="submit" name="login">Iniciar Sesion</button>
-                        </div>
-                        <div class="mt-3">
-                  <p>¿No tienes cuenta? <a href="registro.php">Registrate aquí</a></p>
+                  <div class="text-right">
+                     <button class="btn btn-primary tw-mt-30" type="submit" name="login">Iniciar Sesión</button>
+                  </div>
+                  <div class="mt-3">
+                     <p>¿No tienes cuenta? <a href="registro.php">Regístrate aquí</a></p>
+                     <a href="recuperar_clave.php" class="btn btn-link">¿Olvidaste tu contraseña?</a>
+                  </div>
+               </form>
+            </div>
+         </div>
+      </div>
+   </section>
+
+   <div id="toast-container" style="position: fixed; top: 20px; right: 20px; z-index: 9999;"></div>
+
+   <!-- Scripts -->
+   <script src="js/jquery.js"></script>
+   <script src="js/bootstrap.min.js"></script>
+   <script src="js/owl.carousel.min.js"></script>
+   <script src="js/jquery.counterup.min.js"></script>
+   <script src="js/waypoints.min.js"></script>
+   <script src="js/jquery.colorbox.js"></script>
+   <script src="js/custom.js"></script>
+
+   <script>
+   function mostrarToast(mensaje, tipo = 'error') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.innerText = mensaje;
+      toast.className = `toast ${tipo}`;
+      toast.style = `
+         background-color: ${tipo === 'error' ? '#dc3545' : '#28a745'};
+         color: white;
+         padding: 15px 20px;
+         margin-bottom: 10px;
+         border-radius: 4px;
+         font-weight: bold;
+         box-shadow: 0 0 10px rgba(0,0,0,0.2);
+         animation: fadeIn 0.5s ease;
+      `;
+      container.appendChild(toast);
+      setTimeout(() => {
+         toast.style.animation = 'fadeOut 0.5s ease';
+         toast.addEventListener('animationend', () => toast.remove());
+      }, 3000);
+   }
+
+   // Ejecutar la alerta si existe mensaje desde PHP
+   <?php if (!empty($alertMessage)): ?>
+   window.addEventListener('DOMContentLoaded', () => {
+      <?= $alertMessage ?>
+   });
+   <?php endif; ?>
+   </script>
+
+   <style>
+   @keyframes fadeIn {
+      from { opacity: 0; transform: translateX(100%); }
+      to { opacity: 1; transform: translateX(0); }
+   }
+   @keyframes fadeOut {
+      from { opacity: 1; transform: translateX(0); }
+      to { opacity: 0; transform: translateX(100%); }
+   }
+   </style>
                </div>
                      </form>
                      <!-- Form end-->
@@ -283,6 +334,7 @@ if (isset($_POST['login'])) {
         
       <!-- Template custom-->
       <script type="text/javascript" src="js/custom.js"></script>
+      
    </div>
    <!--Body Inner end-->
 </body>
