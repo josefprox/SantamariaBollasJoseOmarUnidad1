@@ -6,26 +6,33 @@ $mensaje = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $usuario = $_POST['usuario'];
-    $clave = password_hash($_POST['clave'], PASSWORD_DEFAULT); 
+    $clave = $_POST['clave'];
+    $confirmar_clave = $_POST['confirmar_clave'];
     $correo = $_POST['correo'];
     $curso = $_POST['curso'];
 
-    if (!empty($usuario) && !empty($_POST['clave']) && !empty($correo)) {
-        $query = $cnnPDO->prepare("INSERT INTO usuarios (usuario, clave, correo, curso) VALUES (:usuario, :clave, :correo, :curso)");
-        $query->bindParam(':usuario', $usuario);
-        $query->bindParam(':clave', $clave); 
-        $query->bindParam(':correo', $correo);
-        $query->bindParam(':curso', $curso);
+    if (!empty($usuario) && !empty($clave) && !empty($correo) && !empty($confirmar_clave)) {
+        if ($clave === $confirmar_clave) {
+            // Encriptar la clave
+            $claveHashed = password_hash($clave, PASSWORD_DEFAULT);
 
-        if ($query->execute()) {
-            $mensaje = "¡Usuario registrado exitosamente!";
-            header("Location: form.php");
-            exit(); 
+            $query = $cnnPDO->prepare("INSERT INTO usuarios (usuario, clave, correo, curso) VALUES (:usuario, :clave, :correo, :curso)");
+            $query->bindParam(':usuario', $usuario);
+            $query->bindParam(':clave', $claveHashed); 
+            $query->bindParam(':correo', $correo);
+            $query->bindParam(':curso', $curso);
+
+            if ($query->execute()) {
+                header("Location: form.php");
+                exit(); 
+            } else {
+                $mensaje = "Error al registrar usuario.";
+            }
         } else {
-            $mensaje = "Error al registrar usuario.";
+            $mensaje = "Las contraseñas no coinciden.";
         }
     } else {
-        $mensaje = "Todos los campos son obligatorios.";
+        $mensaje = "Todos los campos obligatorios deben ser llenados.";
     }
 }
 ?>
@@ -156,7 +163,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                            </li>
                            <!-- li end-->
                            <li class="nav-item dropdown">
-                                 <a href="contact.html">Contáctanos</a>
+                                 <a href="contact.php">Contáctanos</a>
                            </li>
                         </ul>
                         <!--Nav ul end-->
@@ -182,7 +189,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
          </div>
          <div class="col-lg-7 qutoe-form-inner-le">
-            <form class="contact-form" method="POST">
+            <form class="contact-form" method="POST" id="formRegistro">
                <h2 class="column-title"><span>Crea tu cuenta en segundos</span>Formulario de Registro</h2>
                <?php if (!empty($mensaje)): ?>
                <div class="alert alert-danger"><?php echo $mensaje; ?></div>
@@ -200,7 +207,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   </div>
                   <div class="col-lg-12">
                      <div class="form-group">
-                        <input class="form-control form-name" name="clave" placeholder="Contraseña *" type="password" required>
+                        <input class="form-control form-name" name="clave" id="clave" placeholder="Contraseña *" type="password" required>
+                     </div>
+                  </div>
+                   <div class="col-lg-12">
+                     <div class="form-group">
+                        <input class="form-control form-name" name="confirmar_clave" id="confirmar_clave" placeholder="Confirmar contraseña *" type="password" required>
                      </div>
                   </div>
                   <div class="col-lg-12">
@@ -216,6 +228,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   <p>¿Ya tienes cuenta? <a href="form.php">Inicia sesión aquí</a></p>
                </div>
             </form>
+            <script>
+document.getElementById('formRegistro').addEventListener('submit', function(event) {
+    const clave = document.getElementById('clave').value;
+    const confirmarClave = document.getElementById('confirmar_clave').value;
+
+    if (clave !== confirmarClave) {
+        event.preventDefault(); // Evita que se envíe el formulario y se refresque la página
+        alert('Las contraseñas no coinciden. Por favor, verifica.');
+    }
+});
+</script>
          </div>
       </div>
    </div>

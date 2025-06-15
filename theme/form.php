@@ -160,7 +160,7 @@ if (isset($_POST['login'])) {
                            </li>
                            <!-- li end-->
                            <li class="nav-item dropdown">
-                                 <a href="contact.html">Contáctanos</a>
+                                 <a href="contact.php">Contáctanos</a>
                            </li>
                         </ul>
                         <!--Nav ul end-->
