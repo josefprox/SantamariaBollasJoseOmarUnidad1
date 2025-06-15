@@ -201,7 +201,7 @@ if (isset($_POST['login'])) {
                   </div>
                   <div class="mt-3">
                      <p>¿No tienes cuenta? <a href="registro.php">Regístrate aquí</a></p>
-                     <a href="recuperar_clave.php" class="btn btn-link">¿Olvidaste tu contraseña?</a>
+                     <a href="recuperar_clave.php">¿Olvidaste tu contraseña?</a>
                   </div>
                </form>
             </div>

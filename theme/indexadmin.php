@@ -297,7 +297,7 @@ if (isset($_SESSION['usuario'])) {
             <div class="container">
                <div class="row">
                   <div class="col-lg-6 col-md-12">
-                     <div class="copyright-info"><span>Copyright © 2024 a theme by <a>Cursos Data</a></span></div>
+                     <div class="copyright-info"><span>Copyright © 2025 a theme by <a>Cursos Data</a></span></div>
                   </div>
                   <div class="col-lg-6 col-md-12">
                     <div class="footer-social text-right">
