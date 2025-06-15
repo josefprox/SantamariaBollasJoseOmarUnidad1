@@ -3,9 +3,9 @@ session_start();
 require_once 'db_conexion.php';
 
 if (!isset($_SESSION['usuario'])) {
-   header("Location: index.html");
+   header("Location: error_sesion.php");
    exit();
- }
+}
 
 if (isset($_POST['cerrar_sesion'])) {
     session_destroy();
@@ -43,7 +43,7 @@ if (isset($_POST['curso']) && isset($_POST['duracion'])) {
 
         function resetTimer() {
             clearTimeout(inactivityTimeout);
-            inactivityTimeout = setTimeout(logout, 15000); 
+            inactivityTimeout = setTimeout(logout, 35000); 
         }
 
         function logout() {
@@ -160,6 +160,109 @@ if (isset($_POST['curso']) && isset($_POST['duracion'])) {
       text-decoration: underline;
     }
   </style>
+  <style>
+  #chat-bubble {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background-color: #c62828; /* Rojo fuerte */
+    color: white;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    text-align: center;
+    font-size: 28px;
+    line-height: 60px;
+    cursor: pointer;
+    z-index: 9999;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    transition: background 0.3s ease;
+  }
+
+  #chat-bubble:hover {
+    background-color: #b71c1c;
+  }
+
+  #chat-box {
+    position: fixed;
+    bottom: 90px;
+    left: 20px;
+    width: 300px;
+    max-height: 400px;
+    background-color: white;
+    border: 1px solid #e57373;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    z-index: 9999;
+  }
+
+  #chat-box.hidden {
+    display: none;
+  }
+
+  .chat-header {
+    background-color: #d32f2f; /* Rojo */
+    color: white;
+    padding: 12px;
+    font-size: 16px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .chat-body {
+    padding: 10px;
+    overflow-y: auto;
+    height: 200px;
+    font-size: 14px;
+    flex-grow: 1;
+  }
+
+  .chat-input {
+    padding: 10px;
+    border-top: 1px solid #ddd;
+  }
+
+  .chat-input input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #e57373;
+    border-radius: 5px;
+  }
+
+  .user-msg, .bot-msg {
+    margin: 6px 0;
+    padding: 8px;
+    border-radius: 10px;
+    max-width: 80%;
+    word-wrap: break-word;
+  }
+
+  .user-msg {
+    background: #ef5350; /* Rojo claro */
+    color: white;
+    align-self: flex-end;
+    margin-left: auto;
+    text-align: right;
+  }
+
+  .bot-msg {
+    background: #fce4ec; /* Rosa muy claro */
+    color: #880e4f;
+    align-self: flex-start;
+    margin-right: auto;
+    text-align: left;
+  }
+
+  .close-chat {
+    cursor: pointer;
+    font-size: 20px;
+  }
+</style>
 </head>
 
 <body>
@@ -228,7 +331,7 @@ if (isset($_POST['curso']) && isset($_POST['duracion'])) {
          <!-- Header end-->
       </div>
 
-    <?php
+  <?php
 if (isset($_SESSION['usuario'])) {
     $query = $cnnPDO->prepare('SELECT * FROM cursos WHERE usuario = :usuario');
     $query->bindParam(':usuario', $_SESSION['correo']);
@@ -236,31 +339,33 @@ if (isset($_SESSION['usuario'])) {
 
     echo '<div class="row justify-content-center mt-4 mb-4">';
     echo '<div class="col-md-12">';
-    echo '<h2 class="text-center" style="font-size: 30px; margin-bottom: 20px;">Mis Cursos</h2>';
+    echo '<h2 class="text-center" style="font-size: 30px; margin-bottom: 30px; color:rgb(0, 0, 0);">Mis Cursos</h2>';
     echo '</div>';
 
     while ($campo = $query->fetch()) {
-        echo '<div class="col-md-4 mb-3">'; 
-        echo '<div class="card ts-feature-box mt-3 mb-3">'; 
-        echo '<div class="card-body text-center">';
-        echo '<h5 class="card-title ts-feature-title" style="font-size: 24px; margin-bottom: 10px;">' . $campo['curso'] . '</h5>';
-        echo '<h6 class="card-subtitle mb-3 text-body-secondary" style="margin-bottom: 10px;">' . $_SESSION['usuario'] . '</h6>';
-        echo '<a href="#" class="btn btn-primary" style="margin-top: 10px;">Leer más</a>';
-        echo '</div>';
-        echo '</div>';
+        echo '<div class="col-md-4 mb-4">';
+        echo '  <div class="card shadow-sm border-0 h-100" style="border-radius: 15px;">';
+        echo '    <div class="card-body d-flex flex-column align-items-center justify-content-center text-center">';
+        echo '      <div style="background-color: #ffcdd2; border-radius: 50%; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">';
+        echo '        <i class="fa fa-book" style="font-size: 36px; color: #b71c1c;"></i>';
+        echo '      </div>';
+        echo '      <h5 class="card-title" style="font-size: 22px; font-weight: bold; color: #d32f2f;">' . htmlspecialchars($campo['curso']) . '</h5>';
+        echo '      <p class="card-text" style="color: #555;">Usuario: <strong>' . htmlspecialchars($_SESSION['usuario']) . '</strong></p>';
+        echo '      <a href="#" class="btn mt-auto" style="background-color: #c62828; color: white; border-radius: 30px; padding: 8px 20px;">Leer más</a>';
+        echo '    </div>';
+        echo '  </div>';
         echo '</div>';
     }
 
     echo '</div>';
 
-    echo '<div class="row justify-content-center mt-4 mb-4">';
+    echo '<div class="row justify-content-center mt-5 mb-4">';
     echo '<div class="col-md-12">';
-    echo '<h2 class="text-center" style="font-size: 30px; margin-bottom: 20px;">Más Cursos</h2>';
+    echo '<h2 class="text-center" style="font-size: 30px; margin-bottom: 20px; color:rgb(0, 0, 0);">Más Cursos</h2>';
     echo '</div>';
     echo '</div>';
 }
 ?>
-
 <section class="main-container no-padding" id="main-container">
    <div class="ts-services" id="ts-services">
       <div class="container">
@@ -499,6 +604,64 @@ if (isset($_SESSION['usuario'])) {
       <script type="text/javascript" src="js/custom.js"></script>
    </div>
    <!--Body Inner end-->
+   <div id="chat-bubble" onclick="toggleChat()">
+  <i class="fa fa-comments"></i>
+</div>
+
+<div id="chat-box" class="hidden">
+  <div class="chat-header">
+    <strong>¿En qué puedo ayudarte?</strong>
+    <span class="close-chat" onclick="toggleChat()">&times;</span>
+  </div>
+  <div class="chat-body" id="chat-messages">
+    <div class="bot-msg">¡Hola! ¿En qué puedo ayudarte hoy? 😊</div>
+  </div>
+  <div class="chat-input">
+    <input type="text" id="user-input" placeholder="Escribe tu mensaje..." onkeydown="handleInput(event)">
+  </div>
+</div>
+<script>
+  function toggleChat() {
+    var chatBox = document.getElementById('chat-box');
+    chatBox.classList.toggle('hidden');
+  }
+
+  function handleInput(e) {
+    if (e.key === 'Enter') {
+      const input = document.getElementById('user-input');
+      const msg = input.value.trim();
+      if (msg !== '') {
+        addMessage('user', msg);
+        input.value = '';
+        setTimeout(() => {
+          addMessage('bot', generateResponse(msg));
+        }, 600); // Simula un poco de "pensar"
+      }
+    }
+  }
+
+  function addMessage(sender, text) {
+    const chat = document.getElementById('chat-messages');
+    const msg = document.createElement('div');
+    msg.className = sender === 'user' ? 'user-msg' : 'bot-msg';
+    msg.innerText = text;
+    chat.appendChild(msg);
+    chat.scrollTop = chat.scrollHeight;
+  }
+
+  function generateResponse(input) {
+    input = input.toLowerCase();
+    if (input.includes('cursos') || input.includes('curso')) {
+      return 'Ofrecemos cursos de programación, diseño y más. ¿Cuál te interesa?';
+    } else if (input.includes('contacto') || input.includes('teléfono')) {
+      return 'Puedes contactarnos al (+52) 844 256 7560 o al correo josiman280@gmail.com.';
+    } else if (input.includes('gracias')) {
+      return '¡De nada! 😊';
+    } else {
+      return 'Lo siento, soy un bot básico. Puedes dejar tu consulta y te contactaremos pronto.';
+    }
+  }
+</script>
 </body>
 
 </html>

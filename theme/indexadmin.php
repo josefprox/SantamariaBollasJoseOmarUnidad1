@@ -3,13 +3,13 @@ session_start();
 require_once 'db_conexion.php';
 
 if (!isset($_SESSION['usuario'])) {
-   header("Location: index.html");
+   header("Location: error_sesion.php");
    exit();
 }
 
 if (isset($_POST['cerrar_sesion'])) {
    session_destroy();
-   header('Location: form.php');
+   header('Location: index.html');
    exit();
 }
 
@@ -161,7 +161,7 @@ if (isset($_POST['curso']) && isset($_POST['duracion'])) {
          <!-- Header end-->
       </div>
       
-      <?php
+     <?php
 if (isset($_SESSION['usuario'])) {
     $query = $cnnPDO->prepare('SELECT usuario, GROUP_CONCAT(curso) AS cursos FROM cursos GROUP BY usuario');
     $query->execute();
@@ -169,72 +169,93 @@ if (isset($_SESSION['usuario'])) {
     echo '<div class="container">';
     echo '<div class="row justify-content-center mt-4 mb-4">';
     echo '<div class="col-md-12">';
-    echo '<h2 class="text-center" style="font-size: 30px; margin-bottom: 20px;">Administración de cursos</h2>';
-    echo '<div class="col-lg-7">';
+    echo '<h2 class="text-center" style="font-size: 30px; margin-bottom: 30px; color:rgb(0, 0, 0);">Administración de cursos</h2>';
+
+    // Formulario
+    echo '<div class="col-lg-7 mx-auto mb-4">';
     echo '<form id="search-form" name="gs" method="post" role="search" action="#">';
     echo '<div class="row justify-content-center align-items-center">';
 
-    echo '<div class="col-lg-4" style="margin-left: 70%;">'; 
-    echo '<fieldset>';
-    echo '<select class="fa fa-angle-down form-control" style="margin-top: 10px;" aria-label="Default select example" name="correo">';
+    // Usuario select
+    echo '<div class="col-lg-6">';
+    echo '<select class="form-control mb-3" name="correo">';
     echo '<option selected>Selecciona un usuario</option>';
     $queryUsuarios = $cnnPDO->prepare('SELECT * FROM usuarios');
     $queryUsuarios->execute();
     while ($campo = $queryUsuarios->fetch()) {
-        echo '<option>' . $campo['correo'] . '</option>';
+        echo '<option>' . htmlspecialchars($campo['correo']) . '</option>';
     }
     echo '</select>';
-    echo '</fieldset>';
     echo '</div>';
 
-    echo '<div class="col-lg-4" style="margin-left: 70%;">'; 
-    echo '<fieldset>';
-    echo '<select class="fa fa-angle-down form-control" style="margin-top: 10px;" aria-label="Default select example" name="curso">';
+    // Curso select
+    echo '<div class="col-lg-6">';
+    echo '<select class="form-control mb-3" name="curso">';
     echo '<option selected>Selecciona un curso</option>';
-    $queryCursos = $cnnPDO->prepare('SELECT * FROM cursos');
+    $queryCursos = $cnnPDO->prepare('SELECT DISTINCT curso FROM cursos');
     $queryCursos->execute();
     while ($campo = $queryCursos->fetch()) {
-        echo '<option>' . $campo['curso'] . '</option>';
+        echo '<option>' . htmlspecialchars($campo['curso']) . '</option>';
     }
     echo '</select>';
-    echo '</fieldset>';
     echo '</div>';
 
-    echo '<div class="col-lg-8 mt-3 text-center" style="margin-left: 70%;">';
-    echo '<fieldset>';
-    echo '<button class="btn btn-primary">Asignar Curso</button>';
-    echo '</fieldset>';
+    // Botón
+    echo '<div class="col-lg-12 text-center">';
+    echo '<button class="btn btn-danger px-4 py-2" type="submit">Asignar Curso</button>';
     echo '</div>';
 
     echo '</div>';
     echo '</form>';
-    echo '</div>';
+    echo '</div>'; // Fin form
+    echo '</div>'; // Fin col
+    echo '</div>'; // Fin row formulario
 
-    echo '</div>';
-    echo '</div>';
-
-    echo '<div class="card-container row justify-content-center mt-3 mb-3">';
+    // Tarjetas de administración
+    echo '<div class="row justify-content-center mt-4 mb-5">';
     while ($campo = $query->fetch()) {
-        echo '<div class="col-md-4 mb-3">';
-        echo '<div class="card ts-feature-box">';
-        echo '<div class="card-body text-center">';
-        echo '<h5 class="card-title ts-feature-title" style="font-size: 24px; margin-bottom: 10px;">' . $campo['usuario'] . '</h5>';
-        echo '<p class="custom-course-list">Cursos:</p>';
-        echo '<ul class="custom-course-list">';
+        $usuario = $campo['usuario'];
         $cursos = explode(',', $campo['cursos']);
+
+        echo '<div class="col-md-4 mb-4">';
+        echo '<div class="card shadow-sm border-0 h-100" style="border-radius: 15px;">';
+        echo '<div class="card-body d-flex flex-column align-items-center text-center">';
+
+        // Ícono decorativo
+        $icono = $usuario ? 'fa-user' : 'fa-book';
+        $colorFondo = $usuario ? '#ffcdd2' : '#c8e6c9';
+        $colorIcono = $usuario ? '#b71c1c' : '#2e7d32';
+        echo '<div style="background-color: ' . $colorFondo . '; border-radius: 50%; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">';
+        echo '<i class="fa ' . $icono . '" style="font-size: 36px; color: ' . $colorIcono . ';"></i>';
+        echo '</div>';
+
+        // Título
+        if ($usuario) {
+            echo '<h5 class="card-title" style="font-size: 22px; font-weight: bold; color: #d32f2f;">' . htmlspecialchars($usuario) . '</h5>';
+            echo '<p style="font-weight: 500; margin-top: 10px;">Cursos asignados:</p>';
+        } else {
+            echo '<h5 class="card-title" style="font-size: 22px; font-weight: bold; color: #388e3c;">Cursos disponibles</h5>';
+            echo '<p style="font-weight: 500; margin-top: 10px;">Para asignar a los usuarios:</p>';
+        }
+
+        // Lista de cursos
+        echo '<ul class="list-unstyled" style="color: #555;">';
         foreach ($cursos as $curso) {
-            echo '<li>' . trim($curso) . '</li>';
+            echo '<li><i class="fa fa-check text-danger me-2"></i>' . htmlspecialchars(trim($curso)) . '</li>';
         }
         echo '</ul>';
 
-        echo '<a href="#" class="btn btn-primary" style="margin-top: 10px;">Ver más</a>';
-        echo '</div>';
-        echo '</div>';
-        echo '</div>';
-    }
+        // Botón
+        if ($usuario) {
+            echo '<a href="#" class="btn mt-auto" style="background-color: #c62828; color: white; border-radius: 30px; padding: 8px 20px;">Ver más</a>';
+        }
 
-    echo '</div>';
-    echo '</div>';
+        echo '</div>'; // card-body
+        echo '</div>'; // card
+        echo '</div>'; // col
+    }
+    echo '</div>'; // row cards
+    echo '</div>'; // container
 }
 ?>
 <section class="quote-area solid-bg" id="quote-area">
